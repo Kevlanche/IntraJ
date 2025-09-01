@@ -69,73 +69,51 @@ public class IMPDAA {
                            Analysis.AvailableAnalysis.DAA, 1);
   }
 
-  // @Test
-  // public void DAA03() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA03.java",
-  //                          Analysis.AvailableAnalysis.DAA, 2);
-  // }
+  @Test
+  public void IMPDAA03() {
+    UtilTest.checkWarnings(TEST_DIRECTORY, "IMPDAA03.java",
+                           Analysis.AvailableAnalysis.IMPDAA, 3);
+  }
 
-  // @Test
-  // public void DAA04() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA04.java",
-  //                          Analysis.AvailableAnalysis.DAA, 0);
-  // }
+  @Test
+  public void IMPDAA04() {
+    UtilTest.checkWarnings(TEST_DIRECTORY, "IMPDAA04.java",
+                           Analysis.AvailableAnalysis.IMPDAA, 8);
+  }
 
-  // @Test
-  // public void DAA05() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA05.java",
-  //                          Analysis.AvailableAnalysis.DAA, 3);
-  // }
+  @Test
+  public void IMPDAA05() {
+    UtilTest.checkWarnings(TEST_DIRECTORY, "IMPDAA05.java",
+                           Analysis.AvailableAnalysis.IMPDAA, 17);
+  }
 
-  // @Test
-  // public void DAA06() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA06.java",
-  //                          Analysis.AvailableAnalysis.DAA, 0);
-  // }
+  @Test
+  public void IMPDAA06() {
+    UtilTest.checkWarnings(TEST_DIRECTORY, "IMPDAA06.java",
+                           Analysis.AvailableAnalysis.IMPDAA, 8);
+  }
 
-  // @Test
-  // public void DAA07() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA07.java",
-  //                          Analysis.AvailableAnalysis.DAA, 0);
-  // }
+  @Test
+  public void IMPDAA07() {
+    UtilTest.checkWarnings(TEST_DIRECTORY, "IMPDAA07.java",
+                           Analysis.AvailableAnalysis.IMPDAA, 19);
+  }
 
-  // @Test
-  // public void DAA08() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA08.java",
-  //                          Analysis.AvailableAnalysis.DAA, 0);
-  // }
+  @Test
+  public void IMPDAA08() {
+    UtilTest.checkWarnings(TEST_DIRECTORY, "IMPDAA08.java",
+                           Analysis.AvailableAnalysis.IMPDAA, 16);
+  }
 
-  // @Test
-  // public void DAA09() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA09.java",
-  //                          Analysis.AvailableAnalysis.DAA, 3);
-  // }
+  @Test
+  public void IMPDAA09() {
+    UtilTest.checkWarnings(TEST_DIRECTORY, "IMPDAA09.java",
+                           Analysis.AvailableAnalysis.IMPDAA, 2);
+  }
 
-  // @Test
-  // public void DAA10() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA10.java",
-  //                          Analysis.AvailableAnalysis.DAA, 0);
-  // }
-
-  // @Test
-  // public void DAA11() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA11.java",
-  //                          Analysis.AvailableAnalysis.DAA, 0);
-  // }
-
-  // @Test
-  // public void DAA12() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA12.java",
-  //                          Analysis.AvailableAnalysis.DAA, 1);
-  // }
-  // @Test
-  // public void DAA13() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA13.java",
-  //                          Analysis.AvailableAnalysis.DAA, 1);
-  // }
-  // @Test
-  // public void DAA14() {
-  //   UtilTest.checkWarnings(TEST_DIRECTORY, "DAA14.java",
-  //                          Analysis.AvailableAnalysis.DAA, 3);
-  // }
+  @Test
+  public void IMPDAA10() {
+    UtilTest.checkWarnings(TEST_DIRECTORY, "IMPDAA10.java",
+                           Analysis.AvailableAnalysis.IMPDAA, 16);
+  }
 }
