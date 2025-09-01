@@ -456,9 +456,20 @@ public
     } else {
       if (getNumStmt() - 1 == index) {
         res.add(nextNodes());
-      } else if (getStmt(index + 1).isConstCase() &&
-                 getStmt(index + 2) != null) {
-        res.add(getStmt(index + 2).firstNodes());
+      } else if (getStmt(index + 1).isConstCase()) {
+        // For fall-through: find first non-case statement after the case
+        for (int i = index + 1; i < getNumStmt(); ++i) {
+          if (getStmt(i).isSwitchCase()) {
+            continue; // Skip case labels
+          } else {
+            res.add(getStmt(i).firstNodes());
+            break;
+          }
+        }
+        // If no non-case statement found, fall through to block end
+        if (res.isEmpty()) {
+          res.add(nextNodes());
+        }
       } else {
         res.add(getStmt(index + 1).firstNodes());
       }
