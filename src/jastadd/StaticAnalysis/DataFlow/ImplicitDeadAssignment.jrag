@@ -36,22 +36,22 @@ aspect ImplicitDeadAssignment {
 
    AssignExpr contributes warning(
        getCompilationUnit().pathName(),
-       "The value stored in '" + getDest().varDecl().name() +
-           "' is read in the feature, but it is implicitly dead.",
+       "Assignment to '" + getDest().varDecl().name() +
+           "' is implicitly dead: only consumed by assignments that are themselves dead.",
        Analysis.AvailableAnalysis.IMPDAA, null, null) when
    isImplicitlyDead() to CompilationUnit.IMPDAA();
 
    VariableDeclarator contributes warning(
        getCompilationUnit().pathName(),
-       "The value stored in '" + singletonValue().name() +
-           "' is read in the feature, but it is implicitly dead.",
+       "Assignment to '" + singletonValue().name() +
+           "' is implicitly dead: only consumed by assignments that are themselves dead.",
        Analysis.AvailableAnalysis.IMPDAA, null, null) when
    isImplicitlyDead() to CompilationUnit.IMPDAA();
 
    UnaryIncDec contributes warning(
        getCompilationUnit().pathName(),
-       "The value stored in '" + getOperand().varDecl().name() +
-           "' is read in the feature, but it is implicitly dead.",
+       "Assignment to '" + getOperand().varDecl().name() +
+           "' is implicitly dead: only consumed by assignments that are themselves dead.",
        Analysis.AvailableAnalysis.IMPDAA, null, null) when
    isImplicitlyDead() to CompilationUnit.IMPDAA();
 }
