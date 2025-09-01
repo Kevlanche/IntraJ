@@ -19,7 +19,7 @@ aspect ImplicitDeadAssignment {
   eq VariableDeclarator.getInit().enclosingAssignment() = this;
   eq Program.getChild().enclosingAssignment() = null;
 
-  syn boolean CFGNode.isImplicitlyDead() {
+  syn boolean CFGNode.isImplicitlyDead() circular[true] {
     if (daaAllUses().isEmpty() || this.DAA_isDeadAssign())
       return false;
 
