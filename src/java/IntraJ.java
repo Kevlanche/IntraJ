@@ -79,6 +79,7 @@ public class IntraJ extends Frontend {
   private static Boolean pred = false;
   private static Boolean succ = false;
   private static Boolean pdf = false;
+  private static boolean parseOnly = false;
   public static Boolean excludeLiteralsAndNull = false;
   private static IJGraph graph;
   private static String filename;
@@ -147,6 +148,9 @@ public class IntraJ extends Frontend {
         FEOptions.add("-classpath");
         FEOptions.add(args[++i]);
         break;
+      case "-XparseOnly":
+        parseOnly = true;
+        break;
       default:
         System.err.println("Unrecognized option: " + opt);
         printOptionsUsage();
@@ -156,6 +160,14 @@ public class IntraJ extends Frontend {
     return FEOptions.toArray(new String[FEOptions.size()]);
   }
 
+
+  public static Object CodeProber_parse(String[] args) throws Exception {
+    IntraJ intraj = new IntraJ();
+    String[] jCheckerArgs = intraj.setEnv(args);
+    intraj.run(jCheckerArgs);
+    return intraj.getEntryPoint();
+  }
+
   /**
    * Entry point for the Java checker.
    * @param args command-line arguments
@@ -163,7 +175,7 @@ public class IntraJ extends Frontend {
   public static void main(String args[])
       throws FileNotFoundException, InterruptedException, IOException {
     String[] jCheckerArgs = setEnv(args);
- 
+
       IntraJ intraj = getInstance();
       intraj.program = new Program();
       DrAST_root_node = intraj.getEntryPoint();
@@ -172,11 +184,15 @@ public class IntraJ extends Frontend {
       if (exitCode != 0) {
         System.exit(exitCode);
       }
+      if (parseOnly) {
+        return;
+      }
+
 
       if (pdf){
         intraj.generatePDF();
       }
-  
+
       if (statistics) {
         Utils.printStatistics(
             System.out, "Elapsed time (CFG + Dataflow): " + totalTime / 1000 +
@@ -239,10 +255,21 @@ public class IntraJ extends Frontend {
                Program.defaultJavaParser());
   }
 
+  @Override
+  protected int processCompilationUnit(CompilationUnit unit) throws Error {
+    if (parseOnly) {
+      return EXIT_SUCCESS;
+    }
+    return super.processCompilationUnit(unit);
+  }
+
   /**
    * Called for each from-source compilation unit with no errors.
    */
   protected void processNoErrors(CompilationUnit unit) {
+    if (parseOnly) {
+      return;
+    }
     Integer nbrWrn = 0;
     for (Analysis.AvailableAnalysis a : analysis.getActiveAnalyses()) {
       try {
@@ -306,6 +333,7 @@ public class IntraJ extends Frontend {
       System.out.println("  -pred: generates a pdf with the predecessor relation for all the methods in the analysed files. It can be used combined with `-succ`.");
       System.out.println("  -statistics: prints the number of CFGRoots, CFGNodes and CFGEdges in the analysed files.");
       System.out.println("  -nowarn: the warning messages are not printed.");
+      System.out.println("  -XparseOnly: just parse an AST and exit. Useful for testing and DrAST");
 
       System.out.println("-------------- ANALYSIS OPTIONS --------------------");
       System.out.println("Available analysis (ID):");

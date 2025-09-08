@@ -21,6 +21,7 @@ jastadd {
 
     module "intraj", {
       imports "java8 frontend" // ExtendJ dependency for intraj module.
+      imports "java8 backend" // ExtendJ dependency for intraj module.
 
       jastadd {
         basedir "src/jastadd/"
@@ -44,6 +45,7 @@ jastadd {
 
 sourceSets.main {
   java {
+    srcDir 'extendj/src/backend-main'
     srcDir 'extendj/src/frontend-main'
     srcDir 'src/java'
   }
@@ -84,7 +86,7 @@ test {
 
 
 
-// task intraj(type: Jar) { 
+// task intraj(type: Jar) {
 //     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 //     from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } } {

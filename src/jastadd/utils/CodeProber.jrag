@@ -34,7 +34,7 @@ aspect PASTA {
     return ret;
   }
 
-public
+syn
   java.util.List<Diagnostic> Program.showCFG() {
     java.util.List<Diagnostic> ret = new java.util.ArrayList<>();
     for (CompilationUnit unit : getCompilationUnitList()) {
@@ -46,7 +46,7 @@ public
     return ret;
   }
 
-public
+syn
   java.util.List<Diagnostic> MethodDecl.showCFG() {
     java.util.List<Diagnostic> ret = new java.util.ArrayList<>();
     traverseCFG(entry(), new HashSet<CFGNode>(), ret);
@@ -109,4 +109,69 @@ public
              diagnostic.equals(o.diagnostic);
     }
   }
+
+  syn Object MethodDecl.bytecodes() {
+    // flushTreeCache();
+    final ConstantPool pool = hostType().constantPool(); // new ConstantPool(hostType());
+    // hostType().constantPoolPtr()[0] = pool;
+    final CodeGeneration gen = bytecodes(pool);
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final String utf8 = java.nio.charset.StandardCharsets.UTF_8.name();
+    try (PrintStream ps = new PrintStream(baos, true, utf8)) {
+        gen.printBytecodes(ps);
+        final java.util.List<Object> ret = new ArrayList<>();
+
+        for (String line : baos.toString(utf8).split("\n")) {
+          String pc = line.trim().split("\\s")[0];
+          try {
+            int pcInt = Integer.parseInt(pc);
+            CodeGeneration.LineNumberEntry bestEntry = null;
+            for (CodeGeneration.LineNumberEntry lne : gen.lineNumberTable) {
+              if (lne.start_pc > pcInt) {
+                break;
+              }
+              bestEntry = lne;
+            }
+            if (bestEntry != null) {
+              ret.add(new Diagnostic(
+                line,
+                String.format("HLHOVER@%d;%d", (bestEntry.line_number << 12) + 1, ((bestEntry.line_number + 1) << 12) - 1)
+              ));
+              continue;
+            }
+          } catch (NumberFormatException e) {
+            // Ignore, fall down
+          }
+
+          ret.add(line);
+        }
+        return ret;
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException("utf-8 is not supported? This 'should never happen'", e);
+    } catch (IOException e) {
+      throw new RuntimeException("IOException thrown when writing to in-memory stream. This 'should never happen'", e);
+    }
+  }
+
+  syn Object Declarator.showAccessors() = showAccessors("#f00");
+
+  syn Object Declarator.showAccessors(String color) {
+    final HashSet<VarAccess> ret = accessors();
+    final java.util.List<Diagnostic> diags = new ArrayList<>();
+    for (VarAccess acc : ret) {
+      diags.add(new Diagnostic(
+        acc,
+        String.format("LINE-PA@%d;%d;%s", getStart() + getID().length(), acc.getStart(), color)
+      ));
+    }
+    return diags;
+  }
+
+  coll HashSet<VarAccess> Declarator.accessors() root CompilationUnit;
+
+  VarAccess contributes this
+    when (decl() instanceof Declarator)
+    to Declarator.accessors()
+    for decl()
+    ;
 }
